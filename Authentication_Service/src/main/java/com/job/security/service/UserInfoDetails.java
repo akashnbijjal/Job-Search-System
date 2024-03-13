@@ -20,6 +20,7 @@ public class UserInfoDetails implements UserDetails {
 	String password = null;
 
 	List<GrantedAuthority> authorities;
+	
 
 	public UserInfoDetails(Userinfo userinfo) {
 		userName = userinfo.getUsername();

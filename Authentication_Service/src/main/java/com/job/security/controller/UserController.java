@@ -1,20 +1,20 @@
 package com.job.security.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-
 import com.job.security.model.AuthRequest;
 import com.job.security.model.Userinfo;
 import com.job.security.service.JwtService;
 import com.job.security.service.UserInfoService;
-
 import jakarta.validation.Valid;
-
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -50,14 +50,22 @@ public class UserController {
 	}
 
 	@GetMapping("/getUsers")
-	@PreAuthorize("hasAuthority('ADMIN_ROLES')")
+	@PreAuthorize("hasAuthority('employer')")
 	public List<Userinfo> getAllUsers() {
 		return userInfoService.getAllUser();
 	}
 
 	@GetMapping("/getUsers/{id}")
-	@PreAuthorize("hasAuthority('CUSTOMER_ROLES')")
-	public Userinfo getAllUsers(@PathVariable Integer id) {
-		return userInfoService.getUser(id);
+	@PreAuthorize("hasAuthority('employer')")
+	public Userinfo getAllUsers(@PathVariable("userId") long userId) {
+		return userInfoService.getUser(userId);
+	}
+
+	@GetMapping("listofjobseekers/{skillSet}")
+	@PreAuthorize("hasAuthority('employer')")
+	public ResponseEntity<HashMap<String, List<Userinfo>>> listofusersbyskillset(
+			@PathVariable("skillSet") String skillSet) {
+		HashMap<String, List<Userinfo>> userinfo = userInfoService.searchBySkillSet(skillSet);
+		return new ResponseEntity<HashMap<String, List<Userinfo>>>(userinfo, HttpStatus.ACCEPTED);
 	}
 }

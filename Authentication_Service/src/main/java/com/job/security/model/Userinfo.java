@@ -1,5 +1,7 @@
 package com.job.security.model;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -34,10 +36,10 @@ public class Userinfo {
 	@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$")
 	private String password;
 
-	private String gender;
-
-	private String dateofbirth;
-
 	private String mobile;
+
+	private String address;
+
+	private List<String> skillSet;
 
 }

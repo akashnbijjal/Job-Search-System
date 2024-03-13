@@ -1,7 +1,10 @@
 package com.job.security.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,4 +50,12 @@ public class UserInfoService implements UserDetailsService {
 	public Userinfo getUser(long id) {
 		return userInfoRepository.findById(id).get();
 	}
+
+	public HashMap<String, List<Userinfo>> searchBySkillSet(String skillSet) {
+        List<Userinfo> jobSeekers = userInfoRepository.findAllBySkillSetContainingAndRoles(skillSet, "jobseeker");
+
+        HashMap<String, List<Userinfo>> resultMap = new HashMap<>();
+        resultMap.put(skillSet, jobSeekers);
+        return resultMap;
+    }
 }
